@@ -7,7 +7,7 @@ from tkinter.filedialog import askdirectory
 import os.path
 
 from static import QUALITY_KEY, RECURSIVE_KEY, INPUT_KEY, OUTPUT_KEY, EXTENSION_KEY, \
-    SKIP_STAT_KEY, AVIF_KEY, DIR_TREE_KEY, DEFAULT_EXTENSIONS
+    SKIP_STAT_KEY, AVIF_KEY, DIR_TREE_KEY, DEFAULT_EXTENSIONS, DEFAULT_QUALITY
 
 _location = os.path.dirname(__file__)
 _launch_string = f'python {_location}/main.py'
@@ -37,6 +37,7 @@ class Toplevel1:
         self.use_avif = tk.IntVar()
         self.copy_attrs = tk.IntVar(value=1)
         self.recreate_dirs = tk.IntVar(value=1)
+        self.quality = tk.IntVar(value=DEFAULT_QUALITY)
 
         self.Button1 = tk.Button(self.top)
         self.Button1.place(relx=0.867, rely=0.133, height=26, width=67)
@@ -81,7 +82,7 @@ class Toplevel1:
         self.Checkbutton1.configure(text='''Process subdirs''')
         self.Checkbutton1.configure(variable=self.recursive)
 
-        self.Spinbox1 = tk.Spinbox(self.top, from_=50.0, to=100.0)
+        self.Spinbox1 = tk.Spinbox(self.top, from_=0.0, to=100.0, textvariable=self.quality)
         self.Spinbox1.place(relx=0.167, rely=0.833, relheight=0.063
                 , relwidth=0.075)
 
