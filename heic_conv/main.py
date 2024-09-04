@@ -3,7 +3,8 @@
 
 from pathlib import Path
 from shutil import copystat
-from heic_conv.static import EXT_RE, Formats, DEFAULT_EXTENSIONS, DEFAULT_QUALITY
+from static import EXT_RE, Formats, DEFAULT_EXTENSIONS, DEFAULT_QUALITY, \
+    QUALITY_KEY, RECURSIVE_KEY, INPUT_KEY, OUTPUT_KEY, EXTENSION_KEY, SKIP_STAT_KEY, AVIF_KEY, SILENT_MODE_KEY, DIR_TREE_KEY
 import logging
 
 from alive_progress import alive_it as progr
@@ -25,28 +26,28 @@ def parce_extension_list(ext_str: str):
 
 
 @click.command()
-@click.option('--input', '-i', 'source_dir',
+@click.option('--input', INPUT_KEY, 'source_dir',
               type=click.Path(exists=True, file_okay=False, dir_okay=True,
                               resolve_path=True, allow_dash=False, path_type=Path),
               help='Path to folder with source images')
-@click.option('--output', '-o', 'target_dir',
+@click.option('--output', OUTPUT_KEY, 'target_dir',
               type=click.Path(exists=False, file_okay=False, dir_okay=True,
                               resolve_path=True, allow_dash=False, path_type=Path),
               help='Path to folder where encoded images will be saved to')
-@click.option('--quality', '-q', default=DEFAULT_QUALITY, show_default=True,
+@click.option('--quality', QUALITY_KEY, default=DEFAULT_QUALITY, show_default=True,
               help='Value from 1 to 100, that determines output file size/quality '
                    '(1: smallest file size, worst image quality; 100: largest file size, best image quality')
-@click.option('--recursive', '-r',  is_flag=True, show_default=True, default=False,
+@click.option('--recursive', RECURSIVE_KEY,  is_flag=True, show_default=True, default=False,
               help='Process all files in target dir subfolders')
-@click.option('--dir-tree', '-d', 'recreate_dirs', is_flag=True, show_default=True, default=False,
+@click.option('--dir-tree', DIR_TREE_KEY, 'recreate_dirs', is_flag=True, show_default=True, default=False,
               help='Recreate all subfolders in output folder. Working oly in combination with "recursive" flag')
-@click.option('--extensions', '-e', show_default=True, default=DEFAULT_EXTENSIONS,
+@click.option('--extensions', EXTENSION_KEY, show_default=True, default=DEFAULT_EXTENSIONS,
               help='Process only files with these file extensions')
-@click.option('--skip-stat', '-n', 'no_stat', is_flag=True, show_default=True, default=False,
+@click.option('--skip-stat', SKIP_STAT_KEY, 'no_stat', is_flag=True, show_default=True, default=False,
               help='Do not copy original file creation/modification time')
-@click.option('--avif', '-a', 'avif', is_flag=True, show_default=True, default=False,
+@click.option('--avif', AVIF_KEY, 'avif', is_flag=True, show_default=True, default=False,
               help='Use AVIF codec instead of HEIF')
-@click.option('--silent', '-s', 'silent', is_flag=True, show_default=True, default=False,
+@click.option('--silent', SILENT_MODE_KEY, 'silent', is_flag=True, show_default=True, default=False,
               help='Recreate all subfolders in output folder. Working oly in combination with "recursive" flag')
 def process(source_dir: Path, target_dir: Path,
             quality: int, recursive: bool, recreate_dirs: bool,
